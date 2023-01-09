@@ -139,13 +139,3 @@ const getCountryData = function (country) {
 getCountryData('sweden');
 // getCountryData('spain');
 // getCountryData('portugal');
-
-const convertRGBToHex = (r, g, b) => {
-  const firstPair = r.toString(16);
-  const secondPair = g.toString(16);
-  const thirdPair = b.toString(16);
-
-  const hex = '#' + firstPair + secondPair + thirdPair;
-  return hex;
-};
-console.log(convertRGBToHex(255, 255, 255));
