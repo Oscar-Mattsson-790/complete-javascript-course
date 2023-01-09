@@ -83,10 +83,10 @@ const countriesContainer = document.querySelector('.countries');
 //   }, 1000);
 // }, 1000);
 
-const renderCountry = function (data, className = ' ') {
+const renderCountry = function (data, className = '') {
   const html = `
-  <article class"country ${className}">
-  <img class="cpuntry__img" src="${data.flag}" />
+  <article class="country ${className}">
+  <img class="country__img" src="${data.flag}" />
   <div class="country__data">
     <h3 class="country__name">${data.name}</h3>
     <h4 class="country__region">${data.region}</h4>
@@ -99,12 +99,53 @@ const renderCountry = function (data, className = ' ') {
   </article>
   `;
   countriesContainer.insertAdjacentHTML('beforeend', html);
-  countriesContainer.getElementsByClassName.opacity = 1;
+  countriesContainer.style.opacity = 1;
 };
 
 // const request = new XMLHttpRequest();
 // request.open('GET', `https://restcountries.com/v2/name/${country}`);
 // request.send();
 
-const request = fetch('https://restcountries.com/v2/name/portugal');
-console.log(request);
+// const request = fetch('https://restcountries.com/v2/name/portugal');
+// console.log(request);
+
+// const getCountryData = function (country) {
+//   fetch(`https://restcountries.com/v2/name/${country}`)
+//     .then(function (response) {
+//       console.log(response);
+//       return response.json();
+//     })
+//     .then(function (data) {
+//       console.log(data);
+//       renderCountry(data[0]);
+//     });
+// };
+
+const getCountryData = function (country) {
+  fetch(`https://restcountries.com/v2/name/${country}`)
+    .then(response => response.json())
+    .then(data => {
+      renderCountry(data[0]);
+      const neighbour = data[0].borders[0];
+
+      if (!neighbour) return;
+
+      return fetch(`https://restcountries.com/v2/name/${neighbour}`);
+    })
+    .then(response => response.json())
+    .then(data => renderCountry(data[0], 'neighbour'));
+};
+
+getCountryData('sweden');
+// getCountryData('spain');
+// getCountryData('portugal');
+
+const convertRGBToHex = (r, g, b) => {
+  const firstPair = r.toString(16);
+  const secondPair = g.toString(16);
+  const thirdPair = b.toString(16);
+
+  const hex = '#' + firstPair + secondPair + thirdPair;
+  return hex;
+};
+console.log(convertRGBToHex(255, 255, 255));
